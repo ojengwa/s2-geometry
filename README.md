@@ -1,19 +1,19 @@
-s2-geometry-javascript
+s2-geometry (JavaScript/ES5.1)
 ======================
 
-Porting Google's S2 Geometry Library to Javascript
-
+A pure JavaScript/ES5.1 port of Google/Niantic's S2 Geometry library (used by Ingress, Pokemon GO)
 
 Currently contains basic support for S2Cell
 
-More details and examples to come later.
-
-What you need to know for Pokemon GO clients:
+Simple Examples
+---------------
 
 ```javascript
-var cell = S2.S2Cell.FromLatLng({ lat: 40.2574448, lng: -111.7089464 }, 15);
+var level = 15;
+var latlng = { lat: 40.2574448, lng: -111.7089464 };
+var cell = S2.S2Cell.FromLatLng(latlng, level);
 
-cell.getNeighbors(); // [ cellLeft, cellDown, cellRight, cellUp ]
+cell.getNeighbors();  // [ cellLeft, cellDown, cellRight, cellUp ]
 
-cell.getLatLng(); // { lat: 40.2574448, lng: -111.7089464 }
+cell.getLatLng();     // { lat: 40.2574448, lng: -111.7089464 }
 ```

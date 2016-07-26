@@ -22,10 +22,10 @@
 // - i,j: they always use 30 bits, adjusting as needed. we use 0 to (1<<level)-1 instead
 //        (so GetSizeIJ for a cell is always 1)
 
-(function() {
+(function(exports) {
 'use strict';
 
-window.S2 = {};
+var S2 = exports.S2 = {};
 
 var LatLngToXYZ = function(latLng) {
   var d2r = S2.L.LatLng.DEG_TO_RAD;
@@ -76,11 +76,11 @@ var faceXYZToUV = function(face,xyz) {
     case 3: u =  xyz[2]/xyz[0]; v =  xyz[1]/xyz[0]; break;
     case 4: u =  xyz[2]/xyz[1]; v = -xyz[0]/xyz[1]; break;
     case 5: u = -xyz[1]/xyz[2]; v = -xyz[0]/xyz[2]; break;
-    default: throw {error: 'Invalid face'}; break;
+    default: throw {error: 'Invalid face'};
   }
 
   return [u,v];
-}
+};
 
 
 
@@ -112,30 +112,27 @@ var FaceUVToXYZ = function(face,uv) {
   }
 };
 
+var singleSTtoUV = function(st) {
+  if (st >= 0.5) {
+    return (1/3.0) * (4*st*st - 1);
+  } else {
+    return (1/3.0) * (1 - (4*(1-st)*(1-st)));
+  }
+};
 
 var STToUV = function(st) {
-  var singleSTtoUV = function(st) {
-    if (st >= 0.5) {
-      return (1/3.0) * (4*st*st - 1);
-    } else {
-      return (1/3.0) * (1 - (4*(1-st)*(1-st)));
-    }
-  }
-
   return [singleSTtoUV(st[0]), singleSTtoUV(st[1])];
 };
 
 
-
-var UVToST = function(uv) {
-  var singleUVtoST = function(uv) {
-    if (uv >= 0) {
-      return 0.5 * Math.sqrt (1 + 3*uv);
-    } else {
-      return 1 - 0.5 * Math.sqrt (1 - 3*uv);
-    }
+var singleUVtoST = function(uv) {
+  if (uv >= 0) {
+    return 0.5 * Math.sqrt (1 + 3*uv);
+  } else {
+    return 1 - 0.5 * Math.sqrt (1 - 3*uv);
   }
-
+};
+var UVToST = function(uv) {
   return [singleUVtoST(uv[0]), singleUVtoST(uv[1])];
 };
 
@@ -159,7 +156,7 @@ var IJToST = function(ij,order,offsets) {
     (ij[0]+offsets[0])/maxSize,
     (ij[1]+offsets[1])/maxSize
   ];
-}
+};
 
 // hilbert space-filling curve
 // based on http://blog.notdot.net/2009/11/Damn-Cool-Algorithms-Spatial-indexing-with-Quadtrees-and-Hilbert-Curves
@@ -171,7 +168,7 @@ var pointToHilbertQuadList = function(x,y,order) {
     'a': [ [0,'d'], [1,'a'], [3,'b'], [2,'a'] ],
     'b': [ [2,'b'], [1,'b'], [3,'a'], [0,'c'] ],
     'c': [ [2,'c'], [3,'d'], [1,'c'], [0,'b'] ],
-    'd': [ [0,'a'], [3,'c'], [1,'d'], [2,'d'] ]  
+    'd': [ [0,'a'], [3,'c'], [1,'d'], [2,'d'] ]
   };
 
   var currentSquare='a';
@@ -212,8 +209,6 @@ S2.S2Cell.FromLatLng = function(latLng,level) {
   var ij = STToIJ(st,level);
 
   return S2.S2Cell.FromFaceIJ (faceuv[0], ij, level);
-
-  return result;
 };
 
 S2.S2Cell.FromFaceIJ = function(face,ij,level) {
@@ -235,7 +230,7 @@ S2.S2Cell.prototype.getLatLng = function() {
   var uv = STToUV(st);
   var xyz = FaceUVToXYZ(this.face, uv);
 
-  return XYZToLatLng(xyz);  
+  return XYZToLatLng(xyz);
 };
 
 S2.S2Cell.prototype.getCornerLatLngs = function() {
@@ -304,14 +299,20 @@ S2.S2Cell.prototype.getNeighbors = function() {
 };
 
 
-})();
+})('undefined' !== typeof window ? window : module.exports);
 
-(function () {
+(function (exports) {
 'use strict';
 
   // Adapted from Leafletjs https://searchcode.com/codesearch/view/42525008/
 
   var L = {};
+  var S2 = exports.S2;
+
+  if (!exports.L) {
+    exports.L = L;
+  }
+  S2.L = L;
 
   L.LatLng = function (/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
     var lat = parseFloat(rawLat, 10);
@@ -328,12 +329,7 @@ S2.S2Cell.prototype.getNeighbors = function() {
 
     return { lat: lat, lng: lng };
   };
-  
+
   L.LatLng.DEG_TO_RAD = Math.PI / 180;
   L.LatLng.RAD_TO_DEG = 180 / Math.PI;
-  
-  if (!window.L) {
-    window.L = L;
-  }
-  S2.L = L;
-})();
+})('undefined' !== typeof window ? window : module.exports);
