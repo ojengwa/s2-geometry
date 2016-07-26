@@ -13,20 +13,36 @@ var next = cellId;
 var prev = cellId;
 var i;
 
-cell = new S2.S2Cell(cellId);
-console.log(cell.face(), cellId.id(), cellId.toString(), cellId.toLatLng().toString(), cellId.level());
 for (i = 0; i < 10; i += 1) {
-  next = next.next();
   prev = prev.prev();
 
-  walk.push(next);
-  walk.push(prev);
+  walk.unshift([ -(i + 1), prev ]);
 
-  cell = new S2.S2Cell(next);
-  console.log(cell.face(), next.id(), next.toString(), next.toLatLng().toString(), next.level());
-  cell = new S2.S2Cell(prev);
-  console.log(cell.face(), prev.id(), prev.toString(), prev.toLatLng().toString(), prev.level());
+  //cell = new S2.S2Cell(prev);
+  //console.log(cell.face(), prev.id(), prev.toString(), prev.toLatLng().toString(), prev.level());
 }
+
+walk.push([ 0, cellId ]);
+//cell = new S2.S2Cell(cellId);
+//console.log(0, cell.face(), cellId.id(), cellId.toString(), cellId.toLatLng().toString(), cellId.level());
+
+for (i = 0; i < 10; i += 1) {
+  next = next.next();
+
+  walk.push([ i + 1, next ]);
+
+  //cell = new S2.S2Cell(next);
+  //console.log(cell.face(), next.id(), next.toString(), next.toLatLng().toString(), next.level());
+}
+
+walk.forEach(function (parts) {
+  var i = parts[0];
+  var cellId = parts[1];
+
+  cell = new S2.S2Cell(cellId);
+  console.log(i, cell.face(), cellId.id(), cellId.toString(), cellId.toLatLng().toString(), cellId.level());
+});
+//console.log(0, cell.face(), cellId.id(), cellId.toString(), cellId.toLatLng().toString(), cellId.level());
 
 /*
 console.log(cell.id().toString());
