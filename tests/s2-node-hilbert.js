@@ -13,28 +13,24 @@ var next = cellId;
 var prev = cellId;
 var i;
 
+// -10 - -1
 for (i = 0; i < 10; i += 1) {
   prev = prev.prev();
 
   walk.unshift([ -(i + 1), prev ]);
-
-  //cell = new S2.S2Cell(prev);
-  //console.log(cell.face(), prev.id(), prev.toString(), prev.toLatLng().toString(), prev.level());
 }
 
+// 0
 walk.push([ 0, cellId ]);
-//cell = new S2.S2Cell(cellId);
-//console.log(0, cell.face(), cellId.id(), cellId.toString(), cellId.toLatLng().toString(), cellId.level());
 
+// 1 - 10
 for (i = 0; i < 10; i += 1) {
   next = next.next();
 
   walk.push([ i + 1, next ]);
-
-  //cell = new S2.S2Cell(next);
-  //console.log(cell.face(), next.id(), next.toString(), next.toLatLng().toString(), next.level());
 }
 
+// all results
 walk.forEach(function (parts) {
   var i = parts[0];
   var cellId = parts[1];
@@ -42,14 +38,3 @@ walk.forEach(function (parts) {
   cell = new S2.S2Cell(cellId);
   console.log(i, cell.face(), cellId.id(), cellId.toString(), cellId.toLatLng().toString(), cellId.level());
 });
-//console.log(0, cell.face(), cellId.id(), cellId.toString(), cellId.toLatLng().toString(), cellId.level());
-
-/*
-console.log(cell.id().toString());
-var latlng = cell.toLatLng();
-console.log(cellId.toString());
-console.log(cellId.face().toString());
-console.log(cell.orientation().toString());
-console.log(cellId.level().toString());
-console.log(latlng.lat.toString(), latlng.lng.toString());
-*/
