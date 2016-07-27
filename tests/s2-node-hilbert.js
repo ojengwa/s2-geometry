@@ -6,7 +6,6 @@ var s2latlng = new S2.S2LatLng(lat, lng);
 var point;
 var cellId = new S2.S2CellId(s2latlng).parent(15);
 var cell;
-//var cell = new S2.S2Cell(cellId.toLatLng());
 
 var walk = [];
 var next = cellId;
