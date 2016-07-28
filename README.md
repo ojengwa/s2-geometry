@@ -1,9 +1,16 @@
 s2-geometry (JavaScript/ES5.1)
 ======================
 
-A pure JavaScript/ES5.1 port of Google/Niantic's S2 Geometry library (used by **Ingress**, **Pokemon GO**)
+A pure JavaScript/ES5.1 port of Google/Niantic's S2 Geometry library (as used by **Ingress**, **Pokemon GO**)
 
 Currently contains basic support for S2Cell
+
+Where is this being used?
+---------------------
+
+* [pokemap-webapp](https://github.com/Daplie/pokemap-webapp)
+* [node-pokemap](https://github.com/Daplie/node-pokemap)
+* [Pokemon-GO-node-api](https://github.com/Daplie/Pokemon-GO-node-api)
 
 Simple Examples
 ---------------
