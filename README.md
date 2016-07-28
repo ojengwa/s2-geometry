@@ -29,7 +29,7 @@ You can get the previous and next S2CellId from any given Key:
 2. Get the Previous or Next Key
 3. Convert the Key to an Id (uint64 string)
 
-```
+```javascript
 var key = S2.latLngToKey(40.2574448, -111.7089464);
 var id = S2.toId(key);
 
@@ -53,7 +53,7 @@ Convert from base 10 (decimal) `S2 Cell Id` to base 4 `quadkey` (aka hilbert cur
 
 Example '4/032212303102210' becomes '9749618446378729472'
 
-```
+```javascript
 'use strict';
 
 var quadkey = '4/032212303102210'
