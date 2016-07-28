@@ -29,10 +29,32 @@ function getNeighbors(lat, lng, step) {
 }
 
 
+/*
 // Startup Building in Provo
 var lat = 40.2262363;
 var lng = -111.6630927;
 
+var walk = getNeighbors(lat, lng, 5);
+
+walk.forEach(function (cellId, i) {
+  var key = S2.fromId(cellId);
+  var face = parseInt(key.substr(0, 1), 10);
+  var pos = key.substr(2);
+  var level = pos.length;
+
+  // TODO
+  // S2.keyToLatLng(key);
+  // S2.idToLatLng(id);
+
+  // ! because converting CellId / HilbertQuadkey to LatLng is not implemented... yet
+  console.log(-((walk.length - 1) / 2) + i, face, cellId, S2.fromId(cellId), '!', level);
+});
+*/
+
+
+// Kyderman's test location
+var lat = 51.352085106718384;
+var lng = -2.9877930879592896;
 var walk = getNeighbors(lat, lng, 5);
 
 walk.forEach(function (cellId, i) {

@@ -5,8 +5,12 @@ var S2 = require('s2geometry-node');
 //var lng = -111.7089464;
 
 // Startup Building in Provo
-var lat = 40.2262363;
-var lng = -111.6630927;
+//var lat = 40.2262363;
+//var lng = -111.6630927;
+
+// Kyderman's test location
+var lat = 51.352085106718384;
+var lng = -2.9877930879592896;
 
 var s2latlng = new S2.S2LatLng(lat, lng);
 var cellId = new S2.S2CellId(s2latlng).parent(15);

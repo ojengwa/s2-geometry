@@ -333,6 +333,9 @@ S2.fromFacePosLevel = function (faceN, posS, levelN) {
     posB = '0' + posB;
   }
   var bin = Long.fromString(faceN.toString(10), true, 10).toString(2);
+  while (bin.length < 3) {
+    bin = '0' + bin;
+  }
   bin += posB;
   bin += '1';
   while (bin.length < (S2.FACE_BITS + S2.POS_BITS)) {
