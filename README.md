@@ -1,9 +1,16 @@
 s2-geometry (JavaScript/ES5.1)
 ======================
 
-A pure JavaScript/ES5.1 port of Google/Niantic's S2 Geometry library (used by **Ingress**, **Pokemon GO**)
+A pure JavaScript/ES5.1 port of Google/Niantic's S2 Geometry library (as used by **Ingress**, **Pokemon GO**)
 
 Currently contains basic support for S2Cell
+
+Where is this being used?
+---------------------
+
+* [pokemap-webapp](https://github.com/Daplie/pokemap-webapp)
+* [node-pokemap](https://github.com/Daplie/node-pokemap)
+* [Pokemon-GO-node-api](https://github.com/Daplie/Pokemon-GO-node-api)
 
 Simple Examples
 ---------------
@@ -29,9 +36,9 @@ You can get the previous and next S2CellId from any given Key:
 2. Get the Previous or Next Key
 3. Convert the Key to an Id (uint64 string)
 
-```
-var key = S2.latLngToKey(40.2574448, -111.7089464);
-var id = S2.toId(key);
+```javascript
+var key = S2.latLngToKey(40.2574448, -111.7089464);   // '4/032212303102210'
+var id = S2.toId(key);                                // '9749618446378729472'
 
 var nextKey = S2.nextKey(key);
 var nextId = S2.toId(nextKey);
@@ -40,9 +47,9 @@ var prevKey = S2.prevKey(key);
 var prevId = S2.toId(prevKey);
 
 // See it
-console.log(prevKey);
-console.log(key);
-console.log(nextKey);
+console.log(prevKey);                                 // '4/032212303102203'
+console.log(key);                                     // '4/032212303102210'
+console.log(nextKey);                                 // '4/032212303102211'
 console.log(nextId);
 ```
 
@@ -53,7 +60,7 @@ Convert from base 10 (decimal) `S2 Cell Id` to base 4 `quadkey` (aka hilbert cur
 
 Example '4/032212303102210' becomes '9749618446378729472'
 
-```
+```javascript
 'use strict';
 
 var quadkey = '4/032212303102210'
@@ -71,7 +78,7 @@ Convert from hilbert quadtree id to s2 cell id:
 
 Example '9749618446378729472' becomes '4/032212303102210'
 
-```
+```javascript
 'use strict';
 
 var cellId = '9749618446378729472';
