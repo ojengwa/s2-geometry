@@ -30,8 +30,8 @@ You can get the previous and next S2CellId from any given Key:
 3. Convert the Key to an Id (uint64 string)
 
 ```javascript
-var key = S2.latLngToKey(40.2574448, -111.7089464);
-var id = S2.toId(key);
+var key = S2.latLngToKey(40.2574448, -111.7089464);   // '4/032212303102210'
+var id = S2.toId(key);                                // '9749618446378729472'
 
 var nextKey = S2.nextKey(key);
 var nextId = S2.toId(nextKey);
@@ -40,9 +40,9 @@ var prevKey = S2.prevKey(key);
 var prevId = S2.toId(prevKey);
 
 // See it
-console.log(prevKey);
-console.log(key);
-console.log(nextKey);
+console.log(prevKey);                                 // '4/032212303102203'
+console.log(key);                                     // '4/032212303102210'
+console.log(nextKey);                                 // '4/032212303102211'
 console.log(nextId);
 ```
 
@@ -71,7 +71,7 @@ Convert from hilbert quadtree id to s2 cell id:
 
 Example '9749618446378729472' becomes '4/032212303102210'
 
-```
+```javascript
 'use strict';
 
 var cellId = '9749618446378729472';
