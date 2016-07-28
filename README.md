@@ -16,6 +16,34 @@ var cell = S2.S2Cell.FromLatLng(latlng, level);
 cell.getNeighbors();  // [ cellLeft, cellDown, cellRight, cellUp ]
 
 cell.getLatLng();     // { lat: 40.2574448, lng: -111.7089464 }
+
+var key = cell.toHilbertQuadkey();
+```
+
+Previous and Next
+-----------------
+
+You can get the previous and next S2CellId from any given Key:
+
+1. Convert from Lat/Lng to Key (Face and Hilbert Curve Quadtree)
+2. Get the Previous or Next Key
+3. Convert the Key to an Id (uint64 string)
+
+```
+var key = S2.latLngToKey(40.2574448, -111.7089464);
+var id = S2.toId(key);
+
+var nextKey = S2.nextKey(key);
+var nextId = S2.toId(nextKey);
+
+var prevKey = S2.prevKey(key);
+var prevId = S2.toId(prevKey);
+
+// See it
+console.log(prevKey);
+console.log(key);
+console.log(nextKey);
+console.log(nextId);
 ```
 
 convert Cell Id to Quadkey

@@ -375,6 +375,8 @@ S2.latLngToKey = S2.latLngToQuadkey = function (lat, lng, level) {
   //
   // S2.idToLatLng(id)
   // S2.keyToLatLng(key)
+  // S2.nextFace(key)     // prevent wrapping on nextKey
+  // S2.prevFace(key)     // prevent wrapping on prevKey
   //
   // .toKeyArray(id)  // face,quadtree
   // .toKey(id)       // hilbert
@@ -382,6 +384,7 @@ S2.latLngToKey = S2.latLngToQuadkey = function (lat, lng, level) {
   // .toId(key)       // uint64 (as string)
   // .toLong(key)     // long.js
   // .toLatLng(id)    // object? or array?, or string (with comma)?
+  //
   // maybe S2.HQ.x, S2.GPS.x, S2.CI.x?
   return S2.S2Cell.FromLatLng({ lat: lat, lng: lng }, level).toHilbertQuadkey();
 };
