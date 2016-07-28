@@ -28,14 +28,25 @@
 var S2 = exports.S2 = {};
 
 var LatLngToXYZ = function(latLng) {
-  var d2r = S2.L.LatLng.DEG_TO_RAD;
+  // http://stackoverflow.com/questions/8981943/lat-long-to-x-y-z-position-in-js-not-working
+  var lat = latLng.lat;
+  var lon = latLng.lng;
+  var DEG_TO_RAD = Math.PI / 180.0;
 
-  var phi = latLng.lat*d2r;
-  var theta = latLng.lng*d2r;
+  var phi = lat * DEG_TO_RAD;
+  var theta = lon * DEG_TO_RAD;
 
-  var cosphi = Math.cos(phi);
+  var cosLat = Math.cos(phi);
+  var sinLat = Math.sin(phi);
+  var cosLon = Math.cos(theta);
+  var sinLon = Math.sin(theta);
+  var rad = 500.0;
 
-  return [Math.cos(theta)*cosphi, Math.sin(theta)*cosphi, Math.sin(phi)];
+  return [
+    rad * cosLat * cosLon
+  , rad * cosLat * sinLon
+  , rad * sinLat
+  ];
 };
 
 var XYZToLatLng = function(xyz) {
@@ -192,8 +203,6 @@ var pointToHilbertQuadList = function(x,y,order) {
 };
 
 
-
-
 // S2Cell class
 
 S2.S2Cell = function(){};
@@ -253,10 +262,15 @@ S2.S2Cell.prototype.getCornerLatLngs = function() {
 };
 
 
-S2.S2Cell.prototype.getFaceAndQuads = function() {
+S2.S2Cell.prototype.getFaceAndQuads = function () {
   var quads = pointToHilbertQuadList(this.ij[0], this.ij[1], this.level);
 
   return [this.face,quads];
+};
+S2.S2Cell.prototype.toHilbertQuadkey = function () {
+  var quads = pointToHilbertQuadList(this.ij[0], this.ij[1], this.level);
+
+  return this.face.toString(10) + '/' + quads.join('');
 };
 
 S2.S2Cell.prototype.getNeighbors = function() {

@@ -1,9 +1,14 @@
 var S2 = require('s2geometry-node');
-var lat = 40.2574448;
-var lng = -111.7089464;
+
+// Provo, UT (Center St)
+//var lat = 40.2574448;
+//var lng = -111.7089464;
+
+// Startup Building in Provo
+var lat = 40.2262363;
+var lng = -111.6630927;
 
 var s2latlng = new S2.S2LatLng(lat, lng);
-var point;
 var cellId = new S2.S2CellId(s2latlng).parent(15);
 var cell;
 
