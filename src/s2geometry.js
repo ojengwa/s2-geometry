@@ -202,7 +202,6 @@ var pointToHilbertQuadList = function(x,y,order) {
   return positions;
 };
 
-
 // S2Cell class
 
 S2.S2Cell = function(){};
@@ -340,10 +339,16 @@ S2.fromFacePosLevel = function (faceN, posS, levelN) {
     bin += '0';
   }
 
-  return Long.fromString(bin, true, 2).toString();
+  return Long.fromString(bin, true, 2).toString(10);
 };
 
-S2.toHilbertQuadkey = function (idS) {
+S2.toId = S2.toCellId = S2.fromKey = function (key) {
+  var parts = key.split('/');
+
+  return S2.fromFacePosLevel(parts[0], parts[1], parts[1].length);
+};
+
+S2.toKey = S2.fromId = S2.fromCellId = S2.toHilbertQuadkey = function (idS) {
   var Long = exports.dcodeIO && exports.dcodeIO.Long || require('long');
   var bin = Long.fromString(idS, true, 10).toString(2);
   var lsbIndex = bin.lastIndexOf('1');
@@ -363,6 +368,61 @@ S2.toHilbertQuadkey = function (idS) {
   }
 
   return faceS + '/' + posS;
+};
+
+S2.latLngToKey = S2.latLngToQuadkey = function (lat, lng, level) {
+  // TODO
+  //
+  // S2.idToLatLng(id)
+  // S2.keyToLatLng(key)
+  //
+  // .toKeyArray(id)  // face,quadtree
+  // .toKey(id)       // hilbert
+  // .toPoint(id)     // ij
+  // .toId(key)       // uint64 (as string)
+  // .toLong(key)     // long.js
+  // .toLatLng(id)    // object? or array?, or string (with comma)?
+  // maybe S2.HQ.x, S2.GPS.x, S2.CI.x?
+  return S2.S2Cell.FromLatLng({ lat: lat, lng: lng }, level).toHilbertQuadkey();
+};
+
+S2.stepKey = function (key, num) {
+  var Long = exports.dcodeIO && exports.dcodeIO.Long || require('long');
+  var parts = key.split('/');
+
+  var faceS = parts[0];
+  var posS = parts[1];
+  var level = parts[1].length;
+
+  var posL = Long.fromString(posS, true, 4);
+  // TODO handle wrapping (0 === pos + 1)
+  // (only on the 12 edges of the globe)
+  var otherL;
+  if (num > 0) {
+    otherL = posL.add(Math.abs(num));
+  }
+  else if (num < 0) {
+    otherL = posL.subtract(Math.abs(num));
+  }
+  var otherS = otherL.toString(4);
+
+  if ('0' === otherS) {
+    console.warning(new Error("face/position wrapping is not yet supported"));
+  }
+
+  while (otherS.length < level) {
+    otherS = '0' + otherS;
+  }
+
+  return faceS + '/' + otherS;
+};
+
+S2.prevKey = function (key) {
+  return S2.stepKey(key, -1);
+};
+
+S2.nextKey = function (key) {
+  return S2.stepKey(key, 1);
 };
 
 })('undefined' !== typeof window ? window : module.exports);
