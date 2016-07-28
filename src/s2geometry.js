@@ -306,7 +306,7 @@ S2.MAX_LEVEL = 30;
 S2.POS_BITS = (2 * S2.MAX_LEVEL) + 1;
 
 S2.fromFacePosLevel = function (faceN, posS, levelN) {
-  var Long = require('long');
+  var Long = exports.dcodeIO && exports.dcodeIO.Long || require('long');
 
   if (!levelN) {
     levelN = posS.length;
@@ -330,7 +330,7 @@ S2.fromFacePosLevel = function (faceN, posS, levelN) {
 };
 
 S2.toHilbertQuadkey = function (idS) {
-  var Long = require('long');
+  var Long = exports.dcodeIO && exports.dcodeIO.Long || require('long');
   var bin = Long.fromString(idS, true, 10).toString(2);
   var lsbIndex = bin.lastIndexOf('1');
 
