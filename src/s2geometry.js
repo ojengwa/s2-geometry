@@ -298,6 +298,58 @@ S2.S2Cell.prototype.getNeighbors = function() {
 
 };
 
+//
+// Functional Style
+//
+S2.FACE_BITS = 3;
+S2.MAX_LEVEL = 30;
+S2.POS_BITS = (2 * S2.MAX_LEVEL) + 1;
+
+S2.fromFacePosLevel = function (faceN, posS, levelN) {
+  var Long = require('long');
+
+  if (!levelN) {
+    levelN = posS.length;
+  }
+  if (posS.length > levelN) {
+    posS = posS.substr(0, levelN);
+  }
+
+  var posB = Long.fromString(posS, true, 4).toString(2);
+  while (posB.length < (2 * levelN)) {
+    posB = '0' + posB;
+  }
+  var bin = Long.fromString(faceN.toString(10), true, 10).toString(2);
+  bin += posB;
+  bin += '1';
+  while (bin.length < (S2.FACE_BITS + S2.POS_BITS)) {
+    bin += '0';
+  }
+
+  return Long.fromString(bin, true, 2).toString();
+};
+
+S2.toHilbertQuadkey = function (idS) {
+  var Long = require('long');
+  var bin = Long.fromString(idS, true, 10).toString(2);
+  var lsbIndex = bin.lastIndexOf('1');
+
+  // substr(start, len)
+  // substring(start, end)
+  var faceB = bin.substr(0, 3);
+  // posB will always be a multiple of 2 (or it's invalid)
+  var posB = bin.substring(4, lsbIndex);
+  var levelN = posB.length / 2;
+
+  var faceS = Long.fromString(faceB, true, 2).toString(10);
+  var posS = Long.fromString(posB, true, 2).toString(4);
+
+  while (posS.length < levelN) {
+    posS = '0' + posS;
+  }
+
+  return faceS + '/' + posS;
+};
 
 })('undefined' !== typeof window ? window : module.exports);
 

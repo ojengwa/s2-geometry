@@ -1,6 +1,6 @@
 {
   "name": "s2-geometry",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A pure JavaScript/ES5.1 port of Google/Niantic's S2 Geometry library (used by Ingress, Pokemon GO)",
   "main": "src/s2geometry.js",
   "scripts": {
@@ -32,5 +32,8 @@
   "bugs": {
     "url": "https://github.com/coolaj86/s2-geometry-javascript/issues"
   },
-  "homepage": "https://github.com/coolaj86/s2-geometry-javascript#readme"
+  "homepage": "https://github.com/coolaj86/s2-geometry-javascript#readme",
+  "dependencies": {
+    "long": "^3.2.0"
+  }
 }
