@@ -320,6 +320,9 @@ S2.POS_BITS = (2 * S2.MAX_LEVEL) + 1; // 61 (60 bits of data, 1 bit lsb marker)
 
 S2.fromFacePosLevel = function (faceN, posS, levelN) {
   var Long = exports.dcodeIO && exports.dcodeIO.Long || require('long');
+  var faceB;
+  var posB;
+  var bin;
 
   if (!levelN) {
     levelN = posS.length;
@@ -328,16 +331,22 @@ S2.fromFacePosLevel = function (faceN, posS, levelN) {
     posS = posS.substr(0, levelN);
   }
 
-  var posB = Long.fromString(posS, true, 4).toString(2);
+  // 3-bit face value
+  faceB = Long.fromString(faceN.toString(10), true, 10).toString(2);
+  while (faceB.length < S2.FACE_BITS) {
+    faceB = '0' + faceB;
+  }
+
+  // 60-bit position value
+  posB = Long.fromString(posS, true, 4).toString(2);
   while (posB.length < (2 * levelN)) {
     posB = '0' + posB;
   }
-  var bin = Long.fromString(faceN.toString(10), true, 10).toString(2);
-  while (bin.length < S2.FACE_BITS) {
-    bin = '0' + bin;
-  }
-  bin += posB;
+
+  bin = faceB + posB;
+  // 1-bit lsb marker
   bin += '1';
+  // n-bit padding to 64-bits
   while (bin.length < (S2.FACE_BITS + S2.POS_BITS)) {
     bin += '0';
   }
@@ -362,10 +371,10 @@ S2.toKey = S2.fromId = S2.fromCellId = S2.toHilbertQuadkey = function (idS) {
   // MUST come AFTER binstr has been left-padded with '0's
   var lsbIndex = bin.lastIndexOf('1');
   // substr(start, len)
-  // substring(start, end)
-  var faceB = bin.substr(0, 3);
+  // substring(start, end) // includes start, does not include end
+  var faceB = bin.substring(0, 3);
   // posB will always be a multiple of 2 (or it's invalid)
-  var posB = bin.substring(4, lsbIndex);
+  var posB = bin.substring(3, lsbIndex);
   var levelN = posB.length / 2;
 
   var faceS = Long.fromString(faceB, true, 2).toString(10);
