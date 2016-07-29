@@ -52,6 +52,7 @@ tests.forEach(function (loc) {
   loc.lat = s2nId.toLatLng().toString().split(',')[0];
   loc.lng = s2nId.toLatLng().toString().split(',')[1];
   loc.level = s2nId.level(); // always 15
+  loc.point = s2nId.toPoint()// .toArray();
 
   //console.log(JSON.stringify(loc, null, '  '));
 
@@ -60,15 +61,23 @@ tests.forEach(function (loc) {
   var key2 = S2.toKey(id);
   var id2 = S2.toId(key2);
 
-  if (loc.key !== key || loc.id !== id || loc.key !== key2 || loc.id !== id2) {
+  if (loc.key !== key || loc.id !== id) {
     console.error("Error testing " + loc.name + " @ " + loc.lat + ',' + loc.lng);
     console.error("Calculated/Expected:");
     console.error(id, ':', loc.id);
     console.error(key, " : ", loc.key);
-    console.error(id2, ':', loc.id);
-    console.error(key2, " : ", loc.key);
+    console.error(loc.point.x(), loc.point.y(), loc.point.z());
     console.error(Long.fromString(id, true, 10).toString(2));
     console.error(Long.fromString(loc.id, true, 10).toString(2));
+
+    throw new Error('Test Failed');
+  }
+
+  if (loc.key !== key2 || loc.id !== id2) {
+    console.error("Error testing " + loc.name + " @ " + loc.lat + ',' + loc.lng);
+    console.error("Secondary Key / ID conversion failed: Calculated/Expected:");
+    console.error(id2, ':', loc.id);
+    console.error(key2, " : ", loc.key);
 
     throw new Error('Test Failed');
   }
