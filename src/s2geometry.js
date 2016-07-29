@@ -316,7 +316,7 @@ S2.S2Cell.prototype.getNeighbors = function() {
 //
 S2.FACE_BITS = 3;
 S2.MAX_LEVEL = 30;
-S2.POS_BITS = (2 * S2.MAX_LEVEL) + 1;
+S2.POS_BITS = (2 * S2.MAX_LEVEL) + 1; // 61 (60 bits of data, 1 bit lsb marker)
 
 S2.fromFacePosLevel = function (faceN, posS, levelN) {
   var Long = exports.dcodeIO && exports.dcodeIO.Long || require('long');
@@ -354,8 +354,13 @@ S2.toId = S2.toCellId = S2.fromKey = function (key) {
 S2.toKey = S2.fromId = S2.fromCellId = S2.toHilbertQuadkey = function (idS) {
   var Long = exports.dcodeIO && exports.dcodeIO.Long || require('long');
   var bin = Long.fromString(idS, true, 10).toString(2);
-  var lsbIndex = bin.lastIndexOf('1');
 
+  while (bin.length < (S2.FACE_BITS + S2.POS_BITS)) {
+    bin = '0' + bin;
+  }
+
+  // MUST come AFTER binstr has been left-padded with '0's
+  var lsbIndex = bin.lastIndexOf('1');
   // substr(start, len)
   // substring(start, end)
   var faceB = bin.substr(0, 3);
