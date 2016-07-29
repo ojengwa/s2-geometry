@@ -27,7 +27,8 @@
 
 var S2 = exports.S2 = {};
 
-var LatLngToXYZ = function(latLng) {
+/*
+S2.LatLngToXYZ = function(latLng) {
   // http://stackoverflow.com/questions/8981943/lat-long-to-x-y-z-position-in-js-not-working
   var lat = latLng.lat;
   var lon = latLng.lng;
@@ -48,8 +49,19 @@ var LatLngToXYZ = function(latLng) {
   , rad * sinLat
   ];
 };
+*/
+S2.LatLngToXYZ = function(latLng) {
+  var d2r = S2.L.LatLng.DEG_TO_RAD;
 
-var XYZToLatLng = function(xyz) {
+  var phi = latLng.lat*d2r;
+  var theta = latLng.lng*d2r;
+
+  var cosphi = Math.cos(phi);
+
+  return [Math.cos(theta)*cosphi, Math.sin(theta)*cosphi, Math.sin(phi)];
+};
+
+S2.XYZToLatLng = function(xyz) {
   var r2d = S2.L.LatLng.RAD_TO_DEG;
 
   var lat = Math.atan2(xyz[2], Math.sqrt(xyz[0]*xyz[0]+xyz[1]*xyz[1]));
@@ -96,7 +108,7 @@ var faceXYZToUV = function(face,xyz) {
 
 
 
-var XYZToFaceUV = function(xyz) {
+S2.XYZToFaceUV = function(xyz) {
   var face = largestAbsComponent(xyz);
 
   if (xyz[face] < 0) {
@@ -108,7 +120,7 @@ var XYZToFaceUV = function(xyz) {
   return [face, uv];
 };
 
-var FaceUVToXYZ = function(face,uv) {
+S2.FaceUVToXYZ = function(face,uv) {
   var u = uv[0];
   var v = uv[1];
 
@@ -131,7 +143,7 @@ var singleSTtoUV = function(st) {
   }
 };
 
-var STToUV = function(st) {
+S2.STToUV = function(st) {
   return [singleSTtoUV(st[0]), singleSTtoUV(st[1])];
 };
 
@@ -143,12 +155,12 @@ var singleUVtoST = function(uv) {
     return 1 - 0.5 * Math.sqrt (1 - 3*uv);
   }
 };
-var UVToST = function(uv) {
+S2.UVToST = function(uv) {
   return [singleUVtoST(uv[0]), singleUVtoST(uv[1])];
 };
 
 
-var STToIJ = function(st,order) {
+S2.STToIJ = function(st,order) {
   var maxSize = (1<<order);
 
   var singleSTtoIJ = function(st) {
@@ -160,7 +172,7 @@ var STToIJ = function(st,order) {
 };
 
 
-var IJToST = function(ij,order,offsets) {
+S2.IJToST = function(ij,order,offsets) {
   var maxSize = (1<<order);
 
   return [
@@ -207,17 +219,29 @@ var pointToHilbertQuadList = function(x,y,order) {
 S2.S2Cell = function(){};
 
 //static method to construct
-S2.S2Cell.FromLatLng = function(latLng,level) {
+S2.S2Cell.FromLatLng = function(latLng, level) {
+  if (!latLng.lat || !latLng.lng) {
+    throw new Error("Pass { lat: lat, lng: lng } to S2.S2Cell.FromLatLng");
+  }
+  var xyz = S2.LatLngToXYZ(latLng);
 
-  var xyz = LatLngToXYZ(latLng);
+  var faceuv = S2.XYZToFaceUV(xyz);
+  var st = S2.UVToST(faceuv[1]);
 
-  var faceuv = XYZToFaceUV(xyz);
-  var st = UVToST(faceuv[1]);
-
-  var ij = STToIJ(st,level);
+  var ij = S2.STToIJ(st,level);
 
   return S2.S2Cell.FromFaceIJ (faceuv[0], ij, level);
 };
+/*
+S2.faceIjLevelToXyz = function (face, ij, level) {
+  var st = S2.IJToST(ij, level, [0.5, 0.5]);
+  var uv = S2.STToUV(st);
+  var xyz = S2.FaceUVToXYZ(face, uv);
+
+  return S2.XYZToLatLng(xyz);
+  return xyz;
+};
+*/
 
 S2.S2Cell.FromFaceIJ = function(face,ij,level) {
   var cell = new S2.S2Cell();
@@ -234,11 +258,11 @@ S2.S2Cell.prototype.toString = function() {
 };
 
 S2.S2Cell.prototype.getLatLng = function() {
-  var st = IJToST(this.ij,this.level, [0.5,0.5]);
-  var uv = STToUV(st);
-  var xyz = FaceUVToXYZ(this.face, uv);
+  var st = S2.IJToST(this.ij,this.level, [0.5,0.5]);
+  var uv = S2.STToUV(st);
+  var xyz = S2.FaceUVToXYZ(this.face, uv);
 
-  return XYZToLatLng(xyz);
+  return S2.XYZToLatLng(xyz);
 };
 
 S2.S2Cell.prototype.getCornerLatLngs = function() {
@@ -251,11 +275,11 @@ S2.S2Cell.prototype.getCornerLatLngs = function() {
   ];
 
   for (var i=0; i<4; i++) {
-    var st = IJToST(this.ij, this.level, offsets[i]);
-    var uv = STToUV(st);
-    var xyz = FaceUVToXYZ(this.face, uv);
+    var st = S2.IJToST(this.ij, this.level, offsets[i]);
+    var uv = S2.STToUV(st);
+    var xyz = S2.FaceUVToXYZ(this.face, uv);
 
-    result.push ( XYZToLatLng(xyz) );
+    result.push ( S2.XYZToLatLng(xyz) );
   }
   return result;
 };
@@ -284,14 +308,14 @@ S2.S2Cell.prototype.getNeighbors = function() {
       // with the assumption that they're only a little past the borders we can just take the points as
       // just beyond the cube face, project to XYZ, then re-create FaceUV from the XYZ vector
 
-      var st = IJToST(ij,level,[0.5,0.5]);
-      var uv = STToUV(st);
-      var xyz = FaceUVToXYZ(face,uv);
-      var faceuv = XYZToFaceUV(xyz);
+      var st = S2.IJToST(ij,level,[0.5,0.5]);
+      var uv = S2.STToUV(st);
+      var xyz = S2.FaceUVToXYZ(face,uv);
+      var faceuv = S2.XYZToFaceUV(xyz);
       face = faceuv[0];
       uv = faceuv[1];
-      st = UVToST(uv);
-      ij = STToIJ(st,level);
+      st = S2.UVToST(uv);
+      ij = S2.STToIJ(st,level);
       return S2.S2Cell.FromFaceIJ (face, ij, level);
     }
   };
