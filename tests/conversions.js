@@ -1,5 +1,6 @@
 'use strict';
 
+var Long = require('long');
 var s2node = require('s2geometry-node');
 var S2 = require('../src/s2geometry.js').S2;
 
@@ -52,5 +53,23 @@ tests.forEach(function (loc) {
   loc.lng = s2nId.toLatLng().toString().split(',')[1];
   loc.level = s2nId.level(); // always 15
 
-  console.log(JSON.stringify(loc, null, '  '));
+  //console.log(JSON.stringify(loc, null, '  '));
+
+  var key = S2.latLngToQuadkey(loc.lat, loc.lng, level);
+  var id = S2.toId(key);
+  var key2 = S2.toKey(id);
+  var id2 = S2.toId(key2);
+
+  if (loc.key !== key || loc.id !== id || loc.key !== key2 || loc.id !== id2) {
+    console.error("Error testing " + loc.name + " @ " + loc.lat + ',' + loc.lng);
+    console.error("Calculated/Expected:");
+    console.error(id, ':', loc.id);
+    console.error(key, " : ", loc.key);
+    console.error(id2, ':', loc.id);
+    console.error(key2, " : ", loc.key);
+    console.error(Long.fromString(id, true, 10).toString(2));
+    console.error(Long.fromString(loc.id, true, 10).toString(2));
+
+    throw new Error('Test Failed');
+  }
 });
