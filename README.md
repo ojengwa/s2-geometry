@@ -9,7 +9,7 @@ Currently contains basic support for S2Cell
 <tr>
 <td></td>
 <td>
-Face 2 - The North Pole (and Canada and Europe)
+Face 2 - The North Pole <br> (and Canada and Europe)
 
 <a href="http://i.imgur.com/SODO4bT.jpg" target="_face2"><img src="http://i.imgur.com/SODO4bTt.jpg" title="Face 2" alt="Face 2"></a>
 </td>
@@ -27,12 +27,12 @@ Face 1 - Asia
 <a href="http://i.imgur.com/duTLDTV.jpg" target="_face1"><img src="http://i.imgur.com/duTLDTVt.jpg" title="Face 1" alt="Face 1"></a>
 </td>
 <td>
-Face 3 - Nothing... and Australia
+Face 3 - Nothing... <br> (and Australia)
 
 <a href="http://i.imgur.com/6Ho35Tc.jpg" target="_face3"><img src="http://i.imgur.com/6Ho35Tct.jpg" title="Face 3" alt="Face 3"></a>
 </td>
 <td>
-Face 4 - The Americas (and Provo, UT)
+Face 4 - The Americas <br> (and Provo, UT)
 
 <a href="http://i.imgur.com/3IBAfqj.jpg" target="_face4"><img src="http://i.imgur.com/3IBAfqjt.jpg" title="Face 4" alt="Face 4"></a>
 </td>
