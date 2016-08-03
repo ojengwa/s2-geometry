@@ -5,6 +5,53 @@ A pure JavaScript/ES5.1 port of Google/Niantic's S2 Geometry library (as used by
 
 Currently contains basic support for S2Cell
 
+### Face 0 - Africa (i.e. The Congo)
+
+<table>
+<tr>
+<td></td>
+<td>
+Face 2
+
+[![Face 2](http://i.imgur.com/SODO4bTt.jpg)](http://i.imgur.com/SODO4bT.jpg)
+</td>
+<td></td>
+</tr>
+<tr>
+<td>
+Face 0 Africa
+
+[![Face 0](http://i.imgur.com/dLI5Zd1t.jpg)](http://i.imgur.com/dLI5Zd1t.jpg)
+</td>
+<td>
+Face 1 Asia
+
+[![Face 1](http://i.imgur.com/duTLDTVt.jpg)](http://i.imgur.com/duTLDTV.jpg)
+</td>
+<td>
+
+Face 3
+
+[![Face 3](http://i.imgur.com/6Ho35Tct.jpg)](http://i.imgur.com/6Ho35Tc.jpg)
+</td>
+<td>
+Face 4
+
+[![Face 4](http://i.imgur.com/3IBAfqjt.jpg)](http://i.imgur.com/3IBAfqj.jpg)
+</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td>
+Face 5
+
+[![Face 5](http://i.imgur.com/HZCBvgyt.jpg)](http://i.imgur.com/HZCBvgy.jpg)
+</td>
+</tr>
+</table>
+
 Where is this being used?
 ---------------------
 
