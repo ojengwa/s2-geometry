@@ -28,15 +28,13 @@ tests.concat(bugReports).forEach(function (pair, i) {
   var lat = pair[0];
   var lng = pair[1];
 
+  console.log('');
+  console.log('');
+
   if (i < 6) {
-    console.log('');
-    console.log('');
     console.log('FACE', i);
   }
-
-  console.log('');
-  console.log('Lat/Lng');
-  console.log('=', lat + ',' + lng);
+  console.log('Lat/Lng', '=', lat + ',' + lng);
 
   //
   // Lat / Lng to XYZ
@@ -63,7 +61,6 @@ tests.concat(bugReports).forEach(function (pair, i) {
   var nKey = nCell.toString();
   var jQuad = jCell.getFaceAndQuads();
   var jKey = jQuad[0] + '/' + jQuad[1].join('');
-  console.log('');
   console.log('Quadkey');
   console.log('=', nKey);
   console.log('j', jKey, "(" + jS2.toId(jKey) + ")");
