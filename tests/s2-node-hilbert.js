@@ -1,4 +1,4 @@
-var S2 = require('s2geometry-node');
+var s2n = require('s2geometry-node');
 
 // Provo, UT (Center St)
 //var lat = 40.2574448;
@@ -16,8 +16,8 @@ var S2 = require('s2geometry-node');
 var lat = -43.5261282;
 var lng = 172.6561085;
 
-var s2latlng = new S2.S2LatLng(lat, lng);
-var cellId = new S2.S2CellId(s2latlng).parent(15);
+var s2nlatlng = new s2n.S2LatLng(lat, lng);
+var cellId = new s2n.S2CellId(s2nlatlng).parent(15);
 var cell;
 
 var walk = [];
@@ -47,6 +47,6 @@ walk.forEach(function (parts) {
   var i = parts[0];
   var cellId = parts[1];
 
-  cell = new S2.S2Cell(cellId);
+  cell = new s2n.S2Cell(cellId);
   console.log(i, cell.face(), cellId.id(), cellId.toString(), cellId.toLatLng().toString(), cellId.level());
 });

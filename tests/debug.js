@@ -17,13 +17,22 @@ var tests = [
 , [ -124.61538461538463, -69.23076923076924 ]   // face 5
 ];
 
-tests.forEach(function (pair, i) {
+var bugReports = [
+  // https://github.com/jonatkins/s2-geometry-javascript/issues/12
+  [ -6.120097, 106.846511 ]
+  // https://github.com/coolaj86/s2-geometry-javascript/issues/8#issuecomment-237204759
+, [ -33.87347601637759, 151.1954084522501 ]
+];
+
+tests.concat(bugReports).forEach(function (pair, i) {
   var lat = pair[0];
   var lng = pair[1];
 
-  console.log('');
-  console.log('');
-  console.log('FACE', i);
+  if (i < 6) {
+    console.log('');
+    console.log('');
+    console.log('FACE', i);
+  }
 
   console.log('');
   console.log('Lat/Lng');
@@ -57,5 +66,5 @@ tests.forEach(function (pair, i) {
   console.log('');
   console.log('Quadkey');
   console.log('=', nKey);
-  console.log('j', jKey);
+  console.log('j', jKey, "(" + jS2.toId(jKey) + ")");
 });
