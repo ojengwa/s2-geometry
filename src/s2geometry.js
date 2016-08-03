@@ -186,7 +186,7 @@ S2.IJToST = function(ij,order,offsets) {
 // note: rather then calculating the final integer hilbert position, we just return the list of quads
 // this ensures no precision issues whth large orders (S3 cell IDs use up to 30), and is more
 // convenient for pulling out the individual bits as needed later
-var pointToHilbertQuadList = function(x,y,order,sq) {
+var pointToHilbertQuadList = function(x,y,order,face) {
   var hilbertMap = {
     'a': [ [0,'d'], [1,'a'], [3,'b'], [2,'a'] ],
     'b': [ [2,'b'], [1,'b'], [3,'a'], [0,'c'] ],
@@ -194,7 +194,10 @@ var pointToHilbertQuadList = function(x,y,order,sq) {
     'd': [ [0,'a'], [3,'c'], [1,'d'], [2,'d'] ]
   };
 
-  var currentSquare=sq||'a';
+  if ('number' !== typeof face) {
+    console.warn(new Error("called pointToHilbertQuadList without face value, defaulting to '0'").stack);
+  }
+  var currentSquare = (face % 2) ? 'd' : 'a';
   var positions = [];
 
   for (var i=order-1; i>=0; i--) {
@@ -286,36 +289,21 @@ S2.S2Cell.prototype.getCornerLatLngs = function() {
 
 
 S2.S2Cell.prototype.getFaceAndQuads = function () {
-  var sq;
-
-  switch(this.face) {
-    case 0:
-      /* fallthru */
-    case 2:
-      /* fallthru */
-    case 4:
-      sq = 'a';
-      break;
-
-    case 1:
-      /* fallthru */
-    case 3:
-      /* fallthru */
-    case 5:
-      sq = 'd';
-      break;
-  }
-
-  var quads = pointToHilbertQuadList(this.ij[0], this.ij[1], this.level, sq);
+  var quads = pointToHilbertQuadList(this.ij[0], this.ij[1], this.level, this.face);
 
   return [this.face,quads];
 };
 S2.S2Cell.prototype.toHilbertQuadkey = function () {
-  var quads = pointToHilbertQuadList(this.ij[0], this.ij[1], this.level);
+  var quads = pointToHilbertQuadList(this.ij[0], this.ij[1], this.level, this.face);
 
   return this.face.toString(10) + '/' + quads.join('');
 };
 
+S2.latLngToNeighborKeys = S2.S2Cell.latLngToNeighborKeys = function (lat, lng, level) {
+  return S2.S2Cell.FromLatLng({ lat: lat, lng: lng }, level).getNeighbors().map(function (cell) {
+    return cell.toHilbertQuadkey();
+  });
+};
 S2.S2Cell.prototype.getNeighbors = function() {
 
   var fromFaceIJWrap = function(face,ij,level) {
@@ -362,7 +350,7 @@ S2.FACE_BITS = 3;
 S2.MAX_LEVEL = 30;
 S2.POS_BITS = (2 * S2.MAX_LEVEL) + 1; // 61 (60 bits of data, 1 bit lsb marker)
 
-S2.fromFacePosLevel = function (faceN, posS, levelN) {
+S2.facePosLevelToId = S2.S2Cell.facePosLevelToId = S2.fromFacePosLevel = function (faceN, posS, levelN) {
   var Long = exports.dcodeIO && exports.dcodeIO.Long || require('long');
   var faceB;
   var posB;
@@ -398,13 +386,19 @@ S2.fromFacePosLevel = function (faceN, posS, levelN) {
   return Long.fromString(bin, true, 2).toString(10);
 };
 
-S2.toId = S2.toCellId = S2.fromKey = function (key) {
+S2.keyToId = S2.S2Cell.keyToId
+= S2.toId = S2.toCellId = S2.fromKey
+= function (key) {
   var parts = key.split('/');
 
   return S2.fromFacePosLevel(parts[0], parts[1], parts[1].length);
 };
 
-S2.toKey = S2.fromId = S2.fromCellId = S2.toHilbertQuadkey = function (idS) {
+S2.idToKey = S2.S2Cell.idToKey
+= S2.S2Cell.toKey = S2.toKey
+= S2.fromId = S2.fromCellId
+= S2.S2Cell.toHilbertQuadkey  = S2.toHilbertQuadkey
+= function (idS) {
   var Long = exports.dcodeIO && exports.dcodeIO.Long || require('long');
   var bin = Long.fromString(idS, true, 10).toString(2);
 
@@ -431,7 +425,8 @@ S2.toKey = S2.fromId = S2.fromCellId = S2.toHilbertQuadkey = function (idS) {
   return faceS + '/' + posS;
 };
 
-S2.latLngToKey = S2.latLngToQuadkey = function (lat, lng, level) {
+S2.S2Cell.latLngToKey = S2.latLngToKey
+= S2.latLngToQuadkey = function (lat, lng, level) {
   // TODO
   //
   // S2.idToLatLng(id)
@@ -481,11 +476,11 @@ S2.stepKey = function (key, num) {
   return faceS + '/' + otherS;
 };
 
-S2.prevKey = function (key) {
+S2.S2Cell.prevKey = S2.prevKey = function (key) {
   return S2.stepKey(key, -1);
 };
 
-S2.nextKey = function (key) {
+S2.S2Cell.nextKey = S2.nextKey = function (key) {
   return S2.stepKey(key, 1);
 };
 

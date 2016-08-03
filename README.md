@@ -16,15 +16,50 @@ Simple Examples
 ---------------
 
 ```javascript
+'use strict';
+
+var S2 = require('s2-geometry').S2;
+
+var lat = 40.2574448;
+var lng = -111.7089464;
 var level = 15;
-var latlng = { lat: 40.2574448, lng: -111.7089464 };
-var cell = S2.S2Cell.FromLatLng(latlng, level);
 
-cell.getNeighbors();  // [ cellLeft, cellDown, cellRight, cellUp ]
 
-cell.getLatLng();     // { lat: 40.2574448, lng: -111.7089464 }
 
-var key = cell.toHilbertQuadkey();
+//
+// Convert from Lat / Lng
+//
+var key = S2.latLngToKey(lat, lng, level);
+// '4/032212303102210'
+
+
+
+//
+// Convert between Hilbert Curve Quadtree Key and S2 Cell Id
+//
+var id = S2.keyToId(key);
+// '9749618446378729472'
+
+var key = S2.idToKey(id);
+// '9749618446378729472'
+
+
+
+//
+// Neighbors
+//
+var neighbors = S2.latLngToNeighborKeys(lat, lng, level);
+// [ keyLeft, keyDown, keyRight, keyUp ]
+
+
+
+//
+// Previous, Next, and Step
+//
+var nextKey = S2.nextKey(key);
+var prevKey = S2.prevKey(key);
+
+var backTenKeys = S2.stepKey(key, -10);
 ```
 
 Previous and Next
@@ -37,14 +72,16 @@ You can get the previous and next S2CellId from any given Key:
 3. Convert the Key to an Id (uint64 string)
 
 ```javascript
-var key = S2.latLngToKey(40.2574448, -111.7089464);   // '4/032212303102210'
-var id = S2.toId(key);                                // '9749618446378729472'
+var key = S2.latLngToKey(40.2574448, -111.7089464, 15);   // '4/032212303102210'
+var id = S2.keyToId(key);                                 // '9749618446378729472'
 
 var nextKey = S2.nextKey(key);
-var nextId = S2.toId(nextKey);
+var nextId = S2.keyToId(nextKey);
 
 var prevKey = S2.prevKey(key);
-var prevId = S2.toId(prevKey);
+var prevId = S2.keyToId(prevKey);
+
+var backTenKeys = S2.stepKey(key, -10);
 
 // See it
 console.log(prevKey);                                 // '4/032212303102203'
@@ -53,7 +90,7 @@ console.log(nextKey);                                 // '4/032212303102211'
 console.log(nextId);
 ```
 
-convert Cell Id to Quadkey
+convert Cell Id to Hilbert Curve Quad Tree
 ------------------
 
 Convert from base 10 (decimal) `S2 Cell Id` to base 4 `quadkey` (aka hilbert curve quadtree id)
@@ -69,7 +106,7 @@ var face = parts[0];                  // 4
 var position = parts[1];              // '032212303102210';
 var level = '032212303102210'.length; // 15
 
-var cellId = S2.fromFacePosLevel(face, position, level);
+var cellId = S2.facePosLevelToId(face, position, level);
 
 console.log(cellId);
 ```
@@ -83,7 +120,7 @@ Example '9749618446378729472' becomes '4/032212303102210'
 
 var cellId = '9749618446378729472';
 
-var hilbertQuadkey = S2.toHilbertQuadkey(cellId);
+var hilbertQuadkey = S2.idToKey(cellId);
 
 console.log(hilbertQuadkey);
 ```
