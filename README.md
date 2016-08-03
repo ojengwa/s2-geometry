@@ -9,7 +9,7 @@ Currently contains basic support for S2Cell
 <tr>
 <td></td>
 <td>
-Face 2
+Face 2 - The North Pole (and Canada and Europe)
 
 <a href="http://i.imgur.com/SODO4bT.jpg" target="_face2"><img src="http://i.imgur.com/SODO4bTt.jpg" title="Face 2" alt="Face 2"></a>
 </td>
@@ -17,22 +17,22 @@ Face 2
 </tr>
 <tr>
 <td>
-Face 0 Africa
+Face 0 - Africa
 
 <a href="http://i.imgur.com/dLI5Zd1.jpg" target="_face0"><img src="http://i.imgur.com/dLI5Zd1t.jpg" title="Face 0" alt="Face 0"></a>
 </td>
 <td>
-Face 1 Asia
+Face 1 - Asia
 
 <a href="http://i.imgur.com/duTLDTV.jpg" target="_face1"><img src="http://i.imgur.com/duTLDTVt.jpg" title="Face 1" alt="Face 1"></a>
 </td>
 <td>
-Face 3
+Face 3 - Nothing... and Australia
 
 <a href="http://i.imgur.com/6Ho35Tc.jpg" target="_face3"><img src="http://i.imgur.com/6Ho35Tct.jpg" title="Face 3" alt="Face 3"></a>
 </td>
 <td>
-Face 4
+Face 4 - The Americas (and Provo, UT)
 
 <a href="http://i.imgur.com/3IBAfqj.jpg" target="_face4"><img src="http://i.imgur.com/3IBAfqjt.jpg" title="Face 4" alt="Face 4"></a>
 </td>
@@ -42,7 +42,7 @@ Face 4
 <td></td>
 <td></td>
 <td>
-Face 5
+Face 5 - Antarctica
 
 <a href="http://i.imgur.com/HZCBvgy.jpg" target="_face5"><img src="http://i.imgur.com/HZCBvgyt.jpg" title="Face 5" alt="Face 5"></a>
 </td>
