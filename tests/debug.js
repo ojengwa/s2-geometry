@@ -17,16 +17,28 @@ var tests = [
 , [ -124.61538461538463, -69.23076923076924 ]   // face 5
 ];
 
+var tests = [
+  [ -3.9832738, 12.6825449,   'The Congo          (Africa)' ]
+, [ 19.0827696, 72.7407752,   'Mumbai, India      (Asia)' ]
+, [ 68.5207533, -74.9563282,  'Greenland          (North Pole)' ]
+, [ -1.573289, -158.957890,   'The Pacific Ocean  (nowhere)' ]
+, [ 40.2573137, -111.7091177, 'Provo, UT, USA     (Americas)' ]
+, [ -46.362972,-73.7431064,   'Antarctica         (South Pole)' ]
+];
+
 var bugReports = [
   // https://github.com/jonatkins/s2-geometry-javascript/issues/12
-  [ -6.120097, 106.846511 ]
+  [ -6.120097, 106.846511, '@Skeec' ]
   // https://github.com/coolaj86/s2-geometry-javascript/issues/8#issuecomment-237204759
 , [ -33.87347601637759, 151.1954084522501 ]
+  // https://github.com/Daplie/s2-geometry.js/issues/1
+, [ 45.74528835847731, 12.5516625, '@vekexasia' ]
 ];
 
 tests.concat(bugReports).forEach(function (pair, i) {
   var lat = pair[0];
   var lng = pair[1];
+  var comment = pair[2] && ('(' + pair[2] + ')') || '';
 
   console.log('');
   console.log('');
@@ -34,7 +46,7 @@ tests.concat(bugReports).forEach(function (pair, i) {
   if (i < 6) {
     console.log('FACE', i);
   }
-  console.log('Lat/Lng', '=', lat + ',' + lng);
+  console.log('Lat/Lng', '=', lat + ',' + lng, comment);
 
   //
   // Lat / Lng to XYZ
