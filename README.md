@@ -15,6 +15,7 @@ Orientation A
 
 <a href="http://i.imgur.com/SODO4bT.jpg" target="_face2"><img src="http://i.imgur.com/SODO4bTt.jpg" title="Face 2" alt="Face 2"></a>
 
+<br>
 The North Pole<br>(and Canada / Europe)
 </td>
 <td></td>
@@ -27,6 +28,7 @@ Orientation A
 
 <a href="http://i.imgur.com/dLI5Zd1.jpg" target="_face0"><img src="http://i.imgur.com/dLI5Zd1t.jpg" title="Face 0" alt="Face 0"></a>
 
+<br>
 Africa
 </td>
 <td>
@@ -36,6 +38,7 @@ Orientation D
 
 <a href="http://i.imgur.com/duTLDTV.jpg" target="_face1"><img src="http://i.imgur.com/duTLDTVt.jpg" title="Face 1" alt="Face 1"></a>
 
+<br>
 Asia
 </td>
 <td>
@@ -45,6 +48,7 @@ Orientation D
 
 <a href="http://i.imgur.com/6Ho35Tc.jpg" target="_face3"><img src="http://i.imgur.com/6Ho35Tct.jpg" title="Face 3" alt="Face 3"></a>
 
+<br>
 Nothing<br>(and Australia)
 </td>
 <td>
@@ -54,6 +58,7 @@ Orientation A
 
 <a href="http://i.imgur.com/3IBAfqj.jpg" target="_face4"><img src="http://i.imgur.com/3IBAfqjt.jpg" title="Face 4" alt="Face 4"></a>
 
+<br>
 The Americas<br>(and Provo, UT)
 </td>
 </tr>
@@ -68,6 +73,7 @@ Orientation D
 
 <a href="http://i.imgur.com/HZCBvgy.jpg" target="_face5"><img src="http://i.imgur.com/HZCBvgyt.jpg" title="Face 5" alt="Face 5"></a>
 
+<br>
 Antarctica
 </td>
 </tr>
