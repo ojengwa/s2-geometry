@@ -484,7 +484,7 @@ S2.S2Cell.nextKey = S2.nextKey = function (key) {
   return S2.stepKey(key, 1);
 };
 
-})('undefined' !== typeof window ? window : module.exports);
+})('undefined' !== typeof module.exports ? module.exports : window);
 
 (function (exports) {
 'use strict';
@@ -517,4 +517,4 @@ S2.S2Cell.nextKey = S2.nextKey = function (key) {
 
   L.LatLng.DEG_TO_RAD = Math.PI / 180;
   L.LatLng.RAD_TO_DEG = 180 / Math.PI;
-})('undefined' !== typeof window ? window : module.exports);
+})('undefined' !== typeof module.exports ? module.exports : window);
