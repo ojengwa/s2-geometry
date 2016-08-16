@@ -22,14 +22,29 @@
 // - i,j: they always use 30 bits, adjusting as needed. we use 0 to (1<<level)-1 instead
 //        (so GetSizeIJ for a cell is always 1)
 
-(function(global){
+(function (exports) {
 'use strict';
 
+var S2 = exports.S2 = { L: {} };
 
-var S2 = (function() {
-'use strict';
+S2.L.LatLng = function (/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
+  var lat = parseFloat(rawLat, 10);
+  var lng = parseFloat(rawLng, 10);
 
-var S2 = {};
+  if (isNaN(lat) || isNaN(lng)) {
+    throw new Error('Invalid LatLng object: (' + rawLat + ', ' + rawLng + ')');
+  }
+
+  if (noWrap !== true) {
+    lat = Math.max(Math.min(lat, 90), -90);                 // clamp latitude into -90..90
+    lng = (lng + 180) % 360 + ((lng < -180 || lng === 180) ? 180 : -180);   // wrap longtitude into -180..180
+  }
+
+  return { lat: lat, lng: lng };
+};
+
+S2.L.LatLng.DEG_TO_RAD = Math.PI / 180;
+S2.L.LatLng.RAD_TO_DEG = 180 / Math.PI;
 
 /*
 S2.LatLngToXYZ = function(latLng) {
@@ -488,52 +503,4 @@ S2.S2Cell.nextKey = S2.nextKey = function (key) {
   return S2.stepKey(key, 1);
 };
 
-return S2;
-})();
-
-var L = (function () {
-  'use strict';
-
-  // Adapted from Leafletjs https://searchcode.com/codesearch/view/42525008/
-
-  var L = {};
-
-  S2.L = L;
-
-  L.LatLng = function (/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
-    var lat = parseFloat(rawLat, 10);
-    var lng = parseFloat(rawLng, 10);
-
-    if (isNaN(lat) || isNaN(lng)) {
-      throw new Error('Invalid LatLng object: (' + rawLat + ', ' + rawLng + ')');
-    }
-
-    if (noWrap !== true) {
-      lat = Math.max(Math.min(lat, 90), -90);                 // clamp latitude into -90..90
-      lng = (lng + 180) % 360 + ((lng < -180 || lng === 180) ? 180 : -180);   // wrap longtitude into -180..180
-    }
-
-    return { lat: lat, lng: lng };
-  };
-
-  L.LatLng.DEG_TO_RAD = Math.PI / 180;
-  L.LatLng.RAD_TO_DEG = 180 / Math.PI;
-  
-  return L;
-})();
-
-// export to module.exports or window
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-  module.exports.S2 = S2;
-  if (!module.exports.L) {
-    module.exports.L = L;
-  }
-}
-else {
-  global.S2 = S2;
-  if (!global.L) {
-    global.L = L;
-  }
-}
-
-})(this);
+})('undefined' !== typeof module ? module.exports : window);
