@@ -22,10 +22,14 @@
 // - i,j: they always use 30 bits, adjusting as needed. we use 0 to (1<<level)-1 instead
 //        (so GetSizeIJ for a cell is always 1)
 
-(function(exports) {
+(function(global){
 'use strict';
 
-var S2 = exports.S2 = {};
+
+var S2 = (function() {
+'use strict';
+
+var S2 = {};
 
 /*
 S2.LatLngToXYZ = function(latLng) {
@@ -484,19 +488,16 @@ S2.S2Cell.nextKey = S2.nextKey = function (key) {
   return S2.stepKey(key, 1);
 };
 
-})('undefined' !== typeof window ? window : module.exports);
+return S2;
+})();
 
-(function (exports) {
-'use strict';
+var L = (function () {
+  'use strict';
 
   // Adapted from Leafletjs https://searchcode.com/codesearch/view/42525008/
 
   var L = {};
-  var S2 = exports.S2;
 
-  if (!exports.L) {
-    exports.L = L;
-  }
   S2.L = L;
 
   L.LatLng = function (/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
@@ -517,4 +518,18 @@ S2.S2Cell.nextKey = S2.nextKey = function (key) {
 
   L.LatLng.DEG_TO_RAD = Math.PI / 180;
   L.LatLng.RAD_TO_DEG = 180 / Math.PI;
-})('undefined' !== typeof window ? window : module.exports);
+  
+  return L;
+})();
+
+// export to module.exports or window
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+  module.exports.S2 = S2;
+  module.exports.L = L;
+}
+else {
+  global.S2 = S2;
+  global.L = L;
+}
+
+})(this);
