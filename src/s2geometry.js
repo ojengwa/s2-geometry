@@ -525,11 +525,15 @@ var L = (function () {
 // export to module.exports or window
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
   module.exports.S2 = S2;
-  module.exports.L = L;
+  if (!module.exports.L) {
+    module.exports.L = L;
+  }
 }
 else {
   global.S2 = S2;
-  global.L = L;
+  if (!global.L) {
+    global.L = L;
+  }
 }
 
 })(this);
