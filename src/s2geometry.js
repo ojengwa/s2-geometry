@@ -242,7 +242,7 @@ S2.S2Cell = function(){};
 
 //static method to construct
 S2.S2Cell.FromLatLng = function(latLng, level) {
-  if (!latLng.lat || !latLng.lng) {
+  if (latLng.lat == null ||  latLng.lng == null) {
     throw new Error("Pass { lat: lat, lng: lng } to S2.S2Cell.FromLatLng");
   }
   var xyz = S2.LatLngToXYZ(latLng);
