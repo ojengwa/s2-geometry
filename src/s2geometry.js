@@ -200,6 +200,30 @@ S2.IJToST = function(ij,order,offsets) {
   ];
 };
 
+
+
+var rotateAndFlipQuadrant = function(n, point, rx, ry)
+{
+	var newX, newY;
+	if(ry == 0)
+	{
+		if(rx == 1){
+			point.x = n - 1 - point.x;
+			point.y = n - 1 - point.y
+
+		}
+
+    var x = point.x;
+		point.x = point.y
+		point.y = x;
+	}
+
+}
+
+
+
+
+
 // hilbert space-filling curve
 // based on http://blog.notdot.net/2009/11/Damn-Cool-Algorithms-Spatial-indexing-with-Quadtrees-and-Hilbert-Curves
 // note: rather then calculating the final integer hilbert position, we just return the list of quads
@@ -240,9 +264,58 @@ var pointToHilbertQuadList = function(x,y,order,face) {
 
 S2.S2Cell = function(){};
 
+S2.S2Cell.FromHilbertQuadKey = function(hilbertQuadkey) {
+  var parts = hilbertQuadkey.split('/');
+  var face = parseInt(parts[0]);
+  var position = parts[1];
+  var maxLevel = position.length;
+  var point = {
+    x : 0,
+    y: 0
+  }
+
+	for(var i = maxLevel - 1; i >= 0; i--)
+	{
+		
+		var level = maxLevel - i;
+		var bit = position[i];
+		var rx = 0, ry = 0;
+		if(bit == '1')
+		{
+			ry = 1;
+		}	
+		else if(bit == '2')
+		{
+			rx = 1;
+			ry = 1;
+		}	
+		else if(bit == '3')
+		{
+			rx = 1;
+		}
+		
+		var val = Math.pow(2, level - 1)
+		rotateAndFlipQuadrant(val, point, rx, ry);
+		
+		point.x += val * rx;
+		point.y += val * ry;
+
+	}
+  
+  if(face % 2 == 1)
+  {
+    var t = point.x;
+    point.x = point.y;
+    point.y = t;
+  }
+
+
+  return S2.S2Cell.FromFaceIJ(parseInt(face),[point.x, point.y],level)
+
+}
 //static method to construct
 S2.S2Cell.FromLatLng = function(latLng, level) {
-  if (!latLng.lat || !latLng.lng) {
+  if (latLng.lat == null ||  latLng.lng == null) {
     throw new Error("Pass { lat: lat, lng: lng } to S2.S2Cell.FromLatLng");
   }
   var xyz = S2.LatLngToXYZ(latLng);
