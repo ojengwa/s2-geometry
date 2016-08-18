@@ -272,50 +272,51 @@ S2.S2Cell.FromHilbertQuadKey = function(hilbertQuadkey) {
   var point = {
     x : 0,
     y: 0
-  }
+  };
+  var i;
+  var level;
+  var bit;
+  var rx, ry;
+  var val;
 
-	for(var i = maxLevel - 1; i >= 0; i--)
-	{
-		
-		var level = maxLevel - i;
-		var bit = position[i];
-		var rx = 0, ry = 0;
-		if(bit == '1')
-		{
+	for(i = maxLevel - 1; i >= 0; i--) {
+
+		level = maxLevel - i;
+		bit = position[i];
+		rx = 0;
+    ry = 0;
+		if (bit === '1') {
 			ry = 1;
-		}	
-		else if(bit == '2')
-		{
+		}
+		else if (bit === '2') {
 			rx = 1;
 			ry = 1;
-		}	
-		else if(bit == '3')
-		{
+		}
+		else if (bit === '3') {
 			rx = 1;
 		}
-		
-		var val = Math.pow(2, level - 1)
+
+		val = Math.pow(2, level - 1);
 		rotateAndFlipQuadrant(val, point, rx, ry);
-		
+
 		point.x += val * rx;
 		point.y += val * ry;
 
 	}
-  
-  if(face % 2 == 1)
-  {
+
+  if (face % 2 === 1) {
     var t = point.x;
     point.x = point.y;
     point.y = t;
   }
 
 
-  return S2.S2Cell.FromFaceIJ(parseInt(face),[point.x, point.y],level)
+  return S2.S2Cell.FromFaceIJ(parseInt(face), [point.x, point.y], level);
+};
 
-}
 //static method to construct
 S2.S2Cell.FromLatLng = function(latLng, level) {
-  if (latLng.lat == null ||  latLng.lng == null) {
+  if ((!latLng.lat && latLng.lat !== 0) || (!latLng.lng && latLng.lng !== 0)) {
     throw new Error("Pass { lat: lat, lng: lng } to S2.S2Cell.FromLatLng");
   }
   var xyz = S2.LatLngToXYZ(latLng);
@@ -327,6 +328,7 @@ S2.S2Cell.FromLatLng = function(latLng, level) {
 
   return S2.S2Cell.FromFaceIJ (faceuv[0], ij, level);
 };
+
 /*
 S2.faceIjLevelToXyz = function (face, ij, level) {
   var st = S2.IJToST(ij, level, [0.5, 0.5]);
@@ -517,8 +519,21 @@ S2.idToKey = S2.S2Cell.idToKey
   return faceS + '/' + posS;
 };
 
+S2.keyToLatLng = S2.S2Cell.keyToLatLng = function (key) {
+  var cell2 = S2.S2Cell.FromHilbertQuadKey(key);
+  return cell2.getLatLng();
+};
+
+S2.idToLatLng = S2.S2Cell.idToLatLng = function (id) {
+  var key = S2.idToKey(id);
+  return S2.keyToLatLng(key);
+};
+
 S2.S2Cell.latLngToKey = S2.latLngToKey
 = S2.latLngToQuadkey = function (lat, lng, level) {
+  if (isNaN(level) || level < 1 || level > 30) {
+    throw new Error("'level' is not a number between 1 and 30 (but it should be)");
+  }
   // TODO
   //
   // S2.idToLatLng(id)

@@ -1,10 +1,8 @@
+'use strict';
+
 var S2 = require('../src/s2geometry.js').S2;
 
-
-
-
-for(var level = 1; level <= 20; level++)
-{
+for(var level = 1; level <= 20; level++) {
 	var success = 0;
 	var total = 0;
 	for (var x = -180.0; x < 180; x += 0.5) {
@@ -15,7 +13,7 @@ for(var level = 1; level <= 20; level++)
 				var quadKey = cell.toHilbertQuadkey();
 				var cell2 = S2.S2Cell.FromHilbertQuadKey(quadKey);
 
-				if(cell.face != cell2.face || 
+				if(cell.face != cell2.face ||
 					cell.ij[0] != cell2.ij[0] ||
 					cell.ij[1] != cell2.ij[1] ||
 					cell.level != cell2.level)
@@ -23,7 +21,7 @@ for(var level = 1; level <= 20; level++)
 						/*console.log({
 							cell: cell,
 							cell2: cell2})*/
-						
+
 					}
 					else
 					{
@@ -34,10 +32,5 @@ for(var level = 1; level <= 20; level++)
 		}
 	}
 
-	console.log("level:" + level + "\t total:" + total + "\t success:" + success)
+	console.log("level:" + level + "\t total:" + total + "\t success:" + success);
 }
-
-
-
-
-

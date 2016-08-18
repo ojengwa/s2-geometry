@@ -118,6 +118,13 @@ var key = S2.idToKey(id);
 // '9749618446378729472'
 
 
+//
+// Convert between Quadkey and Id
+//
+var latlng = S2.keyToLatLng(key);
+var latlng = S2.idToLatLng(id);
+
+
 
 //
 // Neighbors
@@ -197,4 +204,13 @@ var cellId = '9749618446378729472';
 var hilbertQuadkey = S2.idToKey(cellId);
 
 console.log(hilbertQuadkey);
+```
+
+Convert Key and Id to LatLng
+---------------------
+
+```javascript
+var latlng = S2.keyToLatLng('4/032212303102210');
+
+var latlng = S2.idToLatLng('9749618446378729472');
 ```
