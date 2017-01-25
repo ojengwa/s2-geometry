@@ -1,5 +1,2 @@
-s2-geometry.js
+s2-geometry
 =====
-
-Moved to https://git.daplie.com/Daplie/s2-geometry.js
-
